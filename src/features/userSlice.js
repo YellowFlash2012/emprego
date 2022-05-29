@@ -5,6 +5,7 @@ import axios from "axios";
 const initialState = {
     isLoading: false,
     user: JSON.parse(localStorage.getItem("user")),
+    isSidebarOpen:false,
     error:""
 }
 
@@ -41,7 +42,11 @@ export const userLogin = createAsyncThunk("user/userLogin", async (user, thunkAP
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {},
+    reducers: {
+        toggleSidebar: (state) => {
+            state.isSidebarOpen=!state.isSidebarOpen
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(userRegister.pending, (state) => {
             state.isLoading = true;
@@ -82,5 +87,7 @@ const userSlice = createSlice({
         });
     }
 })
+
+export const { toggleSidebar } = userSlice.actions;
 
 export default userSlice.reducer

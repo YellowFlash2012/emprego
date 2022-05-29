@@ -2,13 +2,16 @@ import Wrapper from "../helpers/NavbarSC";
 import {FaAlignLeft, FaCaretDown, FaHome, FaUserCircle} from "react-icons/fa"
 import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
+import { toggleSidebar } from "../features/userSlice";
 
 const DashboardNavbar = () => {
     const dispatch = useDispatch();
 
     const { user } = useSelector(store => store.user);
 
-    const menuToggleHandler = () => { }
+    const menuToggleHandler = () => {
+        dispatch(toggleSidebar())
+    }
 
     const dropDownHandler=()=>{}
     const logoutHandler=()=>{}
