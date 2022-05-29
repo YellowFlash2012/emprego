@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { DashboardNavbar } from "../../components";
 import BigSidebar from "../../components/BigSidebar";
 import Navbar from "../../components/Navbar";
 import SmallSidebar from "../../components/SmallSidebar";
@@ -13,7 +14,7 @@ const SharedLayout = () => {
                 <BigSidebar />
 
                 <div>
-                    <Navbar />
+                    <DashboardNavbar />
 
                     <div className="dashboard-page">
                         <Outlet />

@@ -1,7 +1,8 @@
 import BigSidebar from "./BigSidebar"
+import DashboardNavbar from "./DashboardNavbar"
 import FormRow from "./FormRow"
-import Navbar from "./Navbar"
+
 import SmallSidebar from "./SmallSidebar"
 
 
-export {FormRow, Navbar, SmallSidebar, BigSidebar}
+export { FormRow, DashboardNavbar, SmallSidebar, BigSidebar };
