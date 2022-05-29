@@ -2,15 +2,21 @@ import Wrapper from "../helpers/NavbarSC";
 import {FaAlignLeft, FaCaretDown, FaHome, FaUserCircle} from "react-icons/fa"
 import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSidebar } from "../features/userSlice";
+import { logoutUser, toggleSidebar } from "../features/userSlice";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const DashboardNavbar = () => {
     const [showLogout, setShowLogout] = useState(false);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { user } = useSelector(store => store.user);
+
+    if (!user) {
+        return <Navigate to="/register" replace />
+    }
 
     const menuToggleHandler = () => {
         dispatch(toggleSidebar())
@@ -19,7 +25,9 @@ const DashboardNavbar = () => {
     const dropDownHandler = () => {
         setShowLogout(!showLogout)
     }
-    const logoutHandler=()=>{}
+    const logoutHandler = () => {
+        dispatch(logoutUser())
+    }
     
     return <Wrapper>
         <div className="nav-center">

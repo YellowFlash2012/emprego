@@ -33,6 +33,7 @@ export const userLogin = createAsyncThunk("user/userLogin", async (user, thunkAP
         setTimeout(() => {
             window.location.href = "/dashboard";
         }, 5000);
+
         return res.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -45,6 +46,11 @@ const userSlice = createSlice({
     reducers: {
         toggleSidebar: (state) => {
             state.isSidebarOpen=!state.isSidebarOpen
+        },
+        logoutUser: (state) => {
+            state.user = null;
+            state.isSidebarOpen= false;
+            localStorage.removeItem("user")
         }
     },
     extraReducers: (builder) => {
@@ -76,9 +82,9 @@ const userSlice = createSlice({
 
             state.isLoading = false;
             state.user = user;
+            toast.success(`Welcome back, ${user.name}!`)
 
             localStorage.setItem("user", JSON.stringify(user));
-            toast.success(`Welcome back, ${user.name}!`)
         });
 
         builder.addCase(userLogin.rejected, (state, action) => {
@@ -88,6 +94,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { toggleSidebar } = userSlice.actions;
+export const { toggleSidebar, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer
