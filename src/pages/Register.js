@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import FormRow from "../components/FormRow";
 import Wrapper from "../helpers/RegisterSC";
 
@@ -13,13 +14,23 @@ const Register = () => {
     const [values, setValues] = useState(initialState);
 
     const handleChange = (e) => {
-        console.log(e.target);
+        const name = e.target.name;
+        const value = e.target.value;
+
+        console.log(`${name}:${value}`);
+
+        setValues({ ...values, [name]: value });
     }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
 
-        console.log(e.target);
+        const { name, password, email, isMember } = values;
+
+        if (!email || !password || (!isMember && !name)) {
+            console.log("Those fields can NOT be empty");
+            toast.error("Those fields can NOT be empty!");
+        }
     }
 
     const isMemberSwitch = () => {
@@ -28,7 +39,7 @@ const Register = () => {
 
     return (
         <Wrapper className="full-page">
-            <form className="form">
+            <form className="form" onSubmit={onSubmitHandler}>
                 <h1 className="logo">Emprego</h1>
 
                 <h3>{values.isMember ? "Login" : "Register"}</h3>
@@ -56,7 +67,7 @@ const Register = () => {
                     handleChange={handleChange}
                 />
 
-                <button className="btn btn-block">Login</button>
+                <button className="btn btn-block">{values.isMember ? "Login" : "Register"}</button>
 
                 <p>
                     {values.isMember?"Not a member yet?":"Already a member?"} {""}
