@@ -13,7 +13,13 @@ const url = "https://jobify-prod.herokuapp.com/api/v1/toolkit";
 export const userRegister = createAsyncThunk("user/userRegister", async (user, thunkAPI) => {
     try {
         const res = await axios.post(`${url}/auth/register`, user);
+        setTimeout(() => {
+            window.location.href = "/login"
+            
+        }, 5000);
+        
         return res.data;
+
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg)
     
@@ -22,6 +28,10 @@ export const userRegister = createAsyncThunk("user/userRegister", async (user, t
 export const userLogin = createAsyncThunk("user/userLogin", async (user, thunkAPI) => {
     try {
         const res = await axios.post(`${url}/auth/login`, user);
+
+        setTimeout(() => {
+            window.location.href = "/dashboard";
+        }, 5000);
         return res.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import FormRow from "../components/FormRow";
 import { userLogin, userRegister } from "../features/userSlice";
@@ -16,8 +17,14 @@ const Register = () => {
     const [values, setValues] = useState(initialState);
 
     const dispatch = useDispatch();
-
+    
     const { user, isLoading } = useSelector(store => store.user);
+    console.log(user);
+    
+    if (user) {
+        return <Navigate to="/dashboard" replace />
+    }
+    
 
     const handleChange = (e) => {
         const name = e.target.name;
