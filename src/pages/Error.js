@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import Wrapper from "../helpers/ErrorPageSC";
 
 const Error = () => {
-    return <div className="full-page">
+    return <Wrapper className="full-page">
         <div>
             <img src="images/not-found.svg" alt="not-found" />
 
@@ -11,6 +12,6 @@ const Error = () => {
 
             <Link to="/dashboard">Back Home</Link>
 </div>
-    </div>;
+    </Wrapper>;
 };
 export default Error;
