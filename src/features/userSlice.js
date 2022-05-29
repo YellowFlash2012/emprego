@@ -4,7 +4,7 @@ import axios from "axios";
 
 const initialState = {
     isLoading: false,
-    user: null,
+    user: JSON.parse(localStorage.getItem("user")),
     error:""
 }
 
@@ -42,6 +42,8 @@ const userSlice = createSlice({
 
             state.isLoading = false;
             state.user = user;
+
+            localStorage.setItem("user", JSON.stringify(user))
             toast.success(`You are in ${user.name}!`)
         });
 
@@ -59,6 +61,8 @@ const userSlice = createSlice({
 
             state.isLoading = false;
             state.user = user;
+
+            localStorage.setItem("user", JSON.stringify(user));
             toast.success(`Welcome back, ${user.name}!`)
         });
 
