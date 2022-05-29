@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import FormRow from "../components/FormRow";
+import { userLogin, userRegister } from "../features/userSlice";
 import Wrapper from "../helpers/RegisterSC";
 
 const initialState = {
@@ -12,6 +14,10 @@ const initialState = {
 
 const Register = () => {
     const [values, setValues] = useState(initialState);
+
+    const dispatch = useDispatch();
+
+    const { user, isLoading } = useSelector(store => store.user);
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -30,7 +36,16 @@ const Register = () => {
         if (!email || !password || (!isMember && !name)) {
             console.log("Those fields can NOT be empty");
             toast.error("Those fields can NOT be empty!");
+
+            return;
         }
+
+        if (isMember) {
+            dispatch(userLogin({ email: email, password: password }));
+            return;
+        };
+
+        dispatch(userRegister({ name, email, password }));
     }
 
     const isMemberSwitch = () => {
@@ -67,7 +82,7 @@ const Register = () => {
                     handleChange={handleChange}
                 />
 
-                <button className="btn btn-block">{values.isMember ? "Login" : "Register"}</button>
+                <button className="btn btn-block" disabled={isLoading}>{values.isMember ? "Login" : "Register"}</button>
 
                 <p>
                     {values.isMember?"Not a member yet?":"Already a member?"} {""}
