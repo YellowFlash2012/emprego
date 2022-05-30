@@ -1,11 +1,14 @@
 import Wrapper from "../helpers/JobsSC";
-
+import {FaBriefcase, FaCalendarAlt, FaLocationArrow} from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import JobInfo from "./JobInfo";
 
 const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }) => {
     
     const dispatch = useDispatch();
+
+    const date = createdAt;
 
     const editJobHandler=()=>{}
     const deleteJobHandler = () => {};
@@ -23,13 +26,16 @@ const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }
 
             <div className="content">
                 <div className="content-center">
-                    <h4>more content</h4>
+                    <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+                    <JobInfo icon={<FaCalendarAlt />} text={date} />
+                    <JobInfo icon={<FaBriefcase />} text={jobType} />
+
                     <div className={`status ${status}`}>{status}</div>
                 </div>
 
                 <footer>
                     <div className="actions">
-                        <Link to="add-new-job" className="btn edit-btn" onClick={editJobHandler}>edit{""}</Link>
+                        <Link to="/dashboard/add-new-job" className="btn edit-btn" onClick={editJobHandler}>edit{""}</Link>
                         
                         <button type="button" className="btn delete-btn" onClick={deleteJobHandler}>delete</button>
                     </div>
