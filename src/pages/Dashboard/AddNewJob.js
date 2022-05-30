@@ -1,9 +1,13 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import FormRow from "../../components/FormRow";
+import FormRowSelect from "../../components/FormRowSelect";
+import { addJob, clearInputs, handleChange } from "../../features/jobSlice";
 import Wrapper from "../../helpers/DashboardFormPage";
 
 const AddNewJob = () => {
+    const dispatch = useDispatch();
+
     const { isLoading, position, company, jobLocation, jobType, jobTypeOptions, status, statusOptions, isEditing, editJobId } = useSelector(store => store.job);
 
     const addNewJobHandler = (e) => {
@@ -14,17 +18,18 @@ const AddNewJob = () => {
 
             return;
         }
-    };
 
+        dispatch(addJob({ position, company, jobLocation, jobType, status }));
+
+    };
+    
     const handleInputs = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-
-        console.log(name, value);
+        
+        dispatch(handleChange({name, value}))
+        // console.log(name, value);
     }
-
-    const clearInputFieldsHandler = () => { };
-    
     
     return <Wrapper>
         <form className="form">
@@ -40,8 +45,15 @@ const AddNewJob = () => {
                 {/* jobLocation */}
                 <FormRow type="text" name="jobLocation" value={jobLocation} labelText="job location" handleChange={handleInputs} />
 
+                {/* status */}
+                <FormRowSelect name="status" value={status} handleChange={handleInputs} list={statusOptions} />
+                
+                {/* jobType */}
+                <FormRowSelect name="jobType" labelText="job type" value={jobType} handleChange={handleInputs} list={jobTypeOptions} />
+
+                {/* btn container */}
                 <div className="btn-container">
-                    <button type="button" className="btn btn-block clear-btn" onClick={clearInputFieldsHandler}>
+                    <button type="button" className="btn btn-block clear-btn" onClick={()=>dispatch(clearInputs())}>
                         clear
                     </button>
                     <button type="button" className="btn btn-block submit-btn" onClick={addNewJobHandler} disabled={isLoading}>

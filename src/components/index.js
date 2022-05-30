@@ -3,6 +3,6 @@ import DashboardNavbar from "./DashboardNavbar"
 import FormRow from "./FormRow"
 
 import SmallSidebar from "./SmallSidebar"
+import FormRowSelect from "./FormRowSelect"
 
-
-export { FormRow, DashboardNavbar, SmallSidebar, BigSidebar };
+export { FormRow, DashboardNavbar, SmallSidebar, BigSidebar, FormRowSelect };
