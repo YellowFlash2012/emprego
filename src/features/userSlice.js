@@ -85,6 +85,7 @@ const userSlice = createSlice({
             toast.success(`Welcome back, ${user.name}!`)
 
             localStorage.setItem("user", JSON.stringify(user));
+
         });
 
         builder.addCase(userLogin.rejected, (state, action) => {
