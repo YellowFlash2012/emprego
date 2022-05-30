@@ -50,6 +50,11 @@ export const updateUser = createAsyncThunk("user/updateUser", async (user, thunk
 
         return res.data;
     } catch (error) {
+        if (error.response.status === 401) {
+            thunkAPI.dispatch(logoutUser());
+
+            return thunkAPI.rejectWithValue("You are not authorized! Logging you out...")
+        }
         console.error(error.response);
         return thunkAPI.rejectWithValue(error.response.data.msg);
     }
