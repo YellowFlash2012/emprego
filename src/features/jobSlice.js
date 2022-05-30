@@ -20,7 +20,7 @@ const url = "https://jobify-prod.herokuapp.com/api/v1/toolkit";
 
 export const addJob = createAsyncThunk("job/addJob", async (job, thunkAPI) => {
     try {
-        const res = axios.post(`${url}/jobs`, job, {
+        const res = await axios.post(`${url}/jobs`, job, {
             headers: {
                 authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
             },

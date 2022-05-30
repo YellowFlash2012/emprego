@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllJobs } from "../features/allJobsSlice";
 import Wrapper from "../helpers/JobsContainerSC";
 import Jobs from "./Jobs";
 import Loading from "./Loading";
@@ -9,9 +11,13 @@ const JobsContainer = () => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(getAllJobs())
+    },[dispatch])
+
     if (isLoading) {
         return (
-            <Loading center/>
+            <Loading />
         )
     }
 
