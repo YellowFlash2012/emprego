@@ -38,6 +38,21 @@ export const userLogin = createAsyncThunk("user/userLogin", async (user, thunkAP
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
     }
+});
+
+export const updateUser = createAsyncThunk("user/updateUser", async (user, thunkAPI) => {
+    try {
+        const res = await axios.patch(`${url}/auth/updateUser`, user, {
+            headers: {
+                authorization:`Bearer ${thunkAPI.getState().user.user.token}`
+            }
+        });
+
+        return res.data;
+    } catch (error) {
+        console.error(error.response);
+        return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
 })
 
 const userSlice = createSlice({
@@ -82,9 +97,8 @@ const userSlice = createSlice({
 
             state.isLoading = false;
             state.user = user;
-            toast.success(`Welcome back, ${user.name}!`)
-
             localStorage.setItem("user", JSON.stringify(user));
+            toast.success(`Welcome back, ${user.name}!`)
 
         });
 
@@ -92,6 +106,28 @@ const userSlice = createSlice({
             state.isLoading = false;
             toast.error(action.payload)
         });
+
+        builder.addCase(updateUser.pending, state => {
+            state.isLoading = true;
+            
+        });
+        builder.addCase(updateUser.fulfilled, (state,{payload}) => {
+            const { user } = payload;
+            state.isLoading = false;
+            state.user = user;
+
+            localStorage.setItem("user", JSON.stringify(user));
+
+            toast.success("Profile successfully updated!");
+            
+        });
+
+        builder.addCase(updateUser.rejected, (state, action) => {
+            
+            state.isLoading = false;
+            toast.error(action.payload)
+        });
+        
     }
 })
 
