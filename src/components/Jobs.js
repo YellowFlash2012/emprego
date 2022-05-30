@@ -1,17 +1,18 @@
 import Wrapper from "../helpers/JobsSC";
 import {FaBriefcase, FaCalendarAlt, FaLocationArrow} from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment"
 import { Link } from "react-router-dom";
 import JobInfo from "./JobInfo";
+import { deleteJob } from "../features/jobSlice";
 
 const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }) => {
     
     const dispatch = useDispatch();
 
-    const date = createdAt;
+    const date = moment(createdAt).format("MMM DD yyyy")
 
     const editJobHandler=()=>{}
-    const deleteJobHandler = () => {};
 
     return (
         <Wrapper>
@@ -37,7 +38,7 @@ const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }
                     <div className="actions">
                         <Link to="/dashboard/add-new-job" className="btn edit-btn" onClick={editJobHandler}>edit{""}</Link>
                         
-                        <button type="button" className="btn delete-btn" onClick={deleteJobHandler}>delete</button>
+                        <button type="button" className="btn delete-btn" onClick={()=>dispatch(deleteJob(_id))}>delete</button>
                     </div>
                 </footer>
             </div>
