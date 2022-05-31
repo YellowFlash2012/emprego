@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { logoutUser } from "./userSlice";
 
-const url = "https://jobify-prod.herokuapp.com/api/v1/toolkit";
+const base_url = "https://jobify-prod.herokuapp.com/api/v1/toolkit";
 
 const initialFiltersState = {
     search: "",
@@ -24,7 +24,14 @@ const initialState = {
     ...initialFiltersState,
 };
 
-export const getAllJobs = createAsyncThunk("allJobs/getAllJobs", async(_, thunkAPI)=>{
+export const getAllJobs = createAsyncThunk("allJobs/getAllJobs", async (_, thunkAPI) => {
+    const { page, search, searchStatus, searchType, sort } = thunkAPI.getState().allJobs;
+
+    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}&page=${page}`;
+
+    if (search) {
+        url=url+`&search=${search}`
+    }
     try {
         const res = await axios.get(`${url}/jobs`, {
             headers: {
@@ -48,7 +55,7 @@ export const getAllJobs = createAsyncThunk("allJobs/getAllJobs", async(_, thunkA
 
 export const getAllStats = createAsyncThunk("allJobs/getAllStats", async (_, thunkAPI) => {
     try {
-        const res = await axios.get(`${url}/jobs/stats`, {
+        const res = await axios.get(`${base_url}/jobs/stats`, {
             headers: {
                 authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
             },
@@ -81,7 +88,8 @@ const allJobsSlice = createSlice({
         },
         changePage: (state, { payload }) => {
             state.page = payload + 1;
-        }
+        },
+        clearAllJobStates:(state)=>initialState
     },
     extraReducers: (builder) => {
         builder.addCase(getAllJobs.pending, (state) => {
@@ -118,6 +126,13 @@ const allJobsSlice = createSlice({
     },
 });
 
-export const { showLoading, hideLoading, handleChange, clearFilters, changePage } = allJobsSlice.actions;
+export const {
+    showLoading,
+    hideLoading,
+    handleChange,
+    clearFilters,
+    changePage,
+    clearAllJobStates,
+} = allJobsSlice.actions;
 
 export default allJobsSlice.reducer

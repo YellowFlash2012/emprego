@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { clearAllJobStates } from "./allJobsSlice";
+import { clearInputs } from "./jobSlice";
 
 const initialState = {
     isLoading: false,
@@ -57,6 +59,18 @@ export const updateUser = createAsyncThunk("user/updateUser", async (user, thunk
         }
         console.error(error.response);
         return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+})
+
+export const clearStore = createAsyncThunk("user/clearStore", async (message, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(logoutUser(message));
+        thunkAPI.dispatch(clearAllJobStates());
+        thunkAPI.dispatch(clearInputs())
+
+        return Promise.resolve();
+    } catch (error) {
+        return Promise.reject()
     }
 })
 
@@ -135,6 +149,12 @@ const userSlice = createSlice({
             
             state.isLoading = false;
             toast.error(action.payload)
+        });
+        
+        builder.addCase(clearStore.rejected, (state) => {
+            
+            
+            toast.error("There was an error clearing all your states")
         });
         
     }

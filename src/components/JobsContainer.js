@@ -8,13 +8,13 @@ import PaginationContainer from "./PaginationContainer";
 
 
 const JobsContainer = () => {
-    const { jobs, isLoading, page, totalJobs, numOfPages } = useSelector(store => store.allJobs);
+    const { jobs, isLoading, page, totalJobs, numOfPages, search, sort, searchStatus, searchType } = useSelector(store => store.allJobs);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllJobs())
-    },[dispatch])
+        dispatch(getAllJobs());
+    }, [dispatch, page, search, sort, searchStatus, searchType]);
 
     if (isLoading) {
         return (

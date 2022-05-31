@@ -2,7 +2,7 @@ import Wrapper from "../helpers/NavbarSC";
 import {FaAlignLeft, FaCaretDown, FaHome, FaUserCircle} from "react-icons/fa"
 import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser, toggleSidebar } from "../features/userSlice";
+import { clearStore, logoutUser, toggleSidebar } from "../features/userSlice";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ const DashboardNavbar = () => {
         setShowLogout(!showLogout)
     }
     const logoutHandler = () => {
-        dispatch(logoutUser())
+        dispatch(clearStore())
     }
     
     return <Wrapper>
