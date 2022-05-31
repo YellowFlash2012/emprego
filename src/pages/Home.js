@@ -18,7 +18,7 @@ const Home = () => {
                 </div>
 
                 <img
-                    src="images/main.svg"
+                    src="images/main.webp"
                     alt="job hunt"
                     className="img main-img"
                 />

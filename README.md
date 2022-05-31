@@ -1,5 +1,6 @@
 # emprego
 React app to keep tab on Job applications
+<a href="https://seguir-emprego.netlify.app/">Live preview</a>
 ![emprego](/public/images/emprego.png)
 
 # Scope:
@@ -8,6 +9,7 @@ Job application tracking made easy. Create an account, login and start saving in
 # Tech stack:
 front-end: React + Redux ToolKit
 backend: external node/express API
+deployment: netlify
 
 # Highlights:
 - use of recharts library to display barchart and area chart of job status: pending, rejected or interview
