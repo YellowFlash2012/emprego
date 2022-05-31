@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import FormRow from "../../components/FormRow";
 import FormRowSelect from "../../components/FormRowSelect";
-import { addJob, clearInputs, handleChange } from "../../features/jobSlice";
+import { addJob, clearInputs, editJob, handleChange } from "../../features/jobSlice";
 import Wrapper from "../../helpers/DashboardFormPage";
 
 const AddNewJob = () => {
@@ -18,6 +18,12 @@ const AddNewJob = () => {
 
             return;
         }
+
+        if (isEditing) {
+            dispatch(editJob({ jobID: editJobId, job: { position, company, jobLocation, jobType, status } }));
+
+            return;
+        };
 
         dispatch(addJob({ position, company, jobLocation, jobType, status }));
 
@@ -56,8 +62,8 @@ const AddNewJob = () => {
                     <button type="button" className="btn btn-block clear-btn" onClick={()=>dispatch(clearInputs())}>
                         clear
                     </button>
-                    <button type="button" className="btn btn-block submit-btn" onClick={addNewJobHandler} disabled={isLoading}>
-                        add job
+                    <button type="submit" className="btn btn-block submit-btn" onClick={addNewJobHandler} disabled={isLoading}>
+                        {isEditing ? "save changes" :"add job"}
                     </button>
                 </div>
             </div>

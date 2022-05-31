@@ -46,6 +46,22 @@ export const getAllJobs = createAsyncThunk("allJobs/getAllJobs", async(_, thunkA
     }
 })
 
+export const getAllStats = createAsyncThunk("allJobs/getAllStats", async (_, thunkAPI) => {
+    try {
+        const res = await axios.get(`${url}/jobs/stats`, {
+            headers: {
+                authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+            },
+        });
+
+        console.log(res.data);
+
+        return res.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue("There was an error fetching the data you requested!");
+    }
+}) 
+
 const allJobsSlice = createSlice({
     name: "allJobs",
     initialState,
@@ -68,6 +84,22 @@ const allJobsSlice = createSlice({
         });
 
         builder.addCase(getAllJobs.rejected, (state, action) => {
+            state.isLoading = false;
+            toast.error(action.payload);
+        });
+        
+        // get all stats
+        builder.addCase(getAllStats.pending, (state) => {
+            state.isLoading = true;
+        });
+
+        builder.addCase(getAllStats.fulfilled, (state,{payload}) => {
+            state.isLoading = false;
+            state.stats = payload.defaultStats;
+            state.monthlyApplications = payload.monthlyApplications;
+        });
+
+        builder.addCase(getAllStats.rejected, (state, action) => {
             state.isLoading = false;
             toast.error(action.payload);
         });

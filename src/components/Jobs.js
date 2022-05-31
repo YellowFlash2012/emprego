@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment"
 import { Link } from "react-router-dom";
 import JobInfo from "./JobInfo";
-import { deleteJob } from "../features/jobSlice";
+import { deleteJob, setEditJob } from "../features/jobSlice";
 
 const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }) => {
     
@@ -12,7 +12,6 @@ const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }
 
     const date = moment(createdAt).format("MMM DD yyyy")
 
-    const editJobHandler=()=>{}
 
     return (
         <Wrapper>
@@ -36,7 +35,7 @@ const Jobs = ({ _id, company, position,jobLocation, jobType, createdAt, status }
 
                 <footer>
                     <div className="actions">
-                        <Link to="/dashboard/add-new-job" className="btn edit-btn" onClick={editJobHandler}>edit{""}</Link>
+                        <Link to="/dashboard/add-new-job" className="btn edit-btn" onClick={()=>dispatch(setEditJob({editJobID:_id, position, company, jobLocation, jobType, status}))}>edit{""}</Link>
                         
                         <button type="button" className="btn delete-btn" onClick={()=>dispatch(deleteJob(_id))}>delete</button>
                     </div>

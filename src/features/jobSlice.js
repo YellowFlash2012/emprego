@@ -66,6 +66,29 @@ export const deleteJob = createAsyncThunk("job/deleteJob", async (jobID, thunkAP
         return thunkAPI.rejectWithValue(error.response.data.msg);
     }
 })
+export const editJob = createAsyncThunk("job/editJob", async ({jobID, job}, thunkAPI) => {
+
+    try {
+        const res = await axios.patch(`${url}/jobs/${jobID}`, job, {
+            headers: {
+                authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+            },
+        });
+
+        thunkAPI.dispatch(clearInputs())
+
+        return res.data;
+    } catch (error) {
+    
+        if (error.response.status === 401) {
+            thunkAPI.dispatch(logoutUser());
+            return thunkAPI.rejectWithValue(
+                "You are not authorized! Logging you out..."
+            );
+        }
+        return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+})
 
 const jobSlice = createSlice({
     name: "job", initialState, reducers: {
@@ -74,6 +97,9 @@ const jobSlice = createSlice({
         },
         clearInputs: () => {
             return initialState;
+        },
+        setEditJob: (state, { payload }) => {
+            return { ...state, isEditing: true, ...payload };
         }
     },
     extraReducers: (builder) => {
@@ -100,8 +126,25 @@ const jobSlice = createSlice({
         builder.addCase(deleteJob.rejected, (state, action) => {
             toast.error(action.payload)
         });
+
+        builder.addCase(editJob.pending, (state) => {
+            state.isLoading = true;
+        });
+        
+        builder.addCase(editJob.fulfilled, (state) => {
+            
+
+            state.isLoading = false;
+            
+            toast.success("Job successfully updated!")
+        });
+
+        builder.addCase(editJob.rejected, (state, action) => {
+            state.isLoading = false;
+            toast.error(action.payload)
+        });
     }})
 
-export const { handleChange, clearInputs } = jobSlice.actions;
+export const { handleChange, clearInputs, setEditJob } = jobSlice.actions;
 
 export default jobSlice.reducer
