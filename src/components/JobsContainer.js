@@ -4,10 +4,11 @@ import { getAllJobs } from "../features/allJobsSlice";
 import Wrapper from "../helpers/JobsContainerSC";
 import Jobs from "./Jobs";
 import Loading from "./Loading";
+import PaginationContainer from "./PaginationContainer";
 
 
 const JobsContainer = () => {
-    const { jobs, isLoading } = useSelector(store => store.allJobs);
+    const { jobs, isLoading, page, totalJobs, numOfPages } = useSelector(store => store.allJobs);
 
     const dispatch = useDispatch();
 
@@ -29,7 +30,7 @@ const JobsContainer = () => {
         )
     }
     return <Wrapper>
-        <h5>jobs info</h5>
+        <h5>{ totalJobs} {totalJobs===1? "job":"jobs"} found</h5>
 
         <div className="jobs">
             {jobs.map((job) => {
@@ -37,6 +38,7 @@ const JobsContainer = () => {
                 return <Jobs key={job._id} {...job}/>
             })}
         </div>
+        {numOfPages>1 && <PaginationContainer />}
     </Wrapper>;
 };
 export default JobsContainer;

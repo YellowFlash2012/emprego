@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { clearFilters, handleChange } from "../features/allJobsSlice";
 import Wrapper from "../helpers/SearchContainerSC";
 import FormRow from "./FormRow";
 import FormRowSelect from "./FormRowSelect";
@@ -10,10 +11,13 @@ const SearchContainer = () => {
 
     const dispatch = useDispatch();
 
-    const handleSearch = (e) => { }
+    const handleSearch = (e) => {
+        dispatch(handleChange({ name: e.target.name, value: e.target.value }));
+    }
 
     const clearFiltersHandler = (e) => {
         e.preventDefault()
+        dispatch(clearFilters())
     }
     
     return (
